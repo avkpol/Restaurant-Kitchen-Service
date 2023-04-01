@@ -7,7 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import DishType, Dish, Cook
 
 
-@login_required
+# @login_required
 def index(request):
     """View function for the home page of the site."""
 
@@ -28,15 +28,15 @@ def index(request):
     return render(request, "restaurant/index.html", context=context)
 
 
-class CookListView(LoginRequiredMixin,generic.ListView):
+class CookListView(generic.ListView):
     model = Cook
     context_object_name = 'cooks'
     template_name = 'cook_list.html'
     paginate_by = 5
 
 
-class CookDetailView(LoginRequiredMixin, generic.DetailView):
+class CookDetailView(generic.DetailView):
     model = Cook
     context_object_name = 'cook'
     template_name = 'cook_detail.html'
-    success_url = reverse_lazy("taxi:driver-list")
+    success_url = reverse_lazy("restaurant:cook-list")
