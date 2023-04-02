@@ -3,7 +3,7 @@ from django.urls import reverse_lazy
 from django.views import generic
 from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import CreateView
+
 
 from .models import DishType, Dish, Cook
 
@@ -39,12 +39,37 @@ class CookListView(generic.ListView):
 class CookDetailView(generic.DetailView):
     model = Cook
     context_object_name = 'cook'
-    template_name = 'cook_detail.html'
-    success_url = reverse_lazy("restaurant:cook-list")
+    template_name = 'restaurant/cook_detail.html'
+    success_url = ("restaurant:cook-list")
 
 
-class CreateCookView(LoginRequiredMixin, CreateView):
+class CookCreateView(LoginRequiredMixin, generic.CreateView):
     model = Cook
     fields = ['years_of_experience', 'username', 'email', 'password', 'first_name', 'last_name']
     template_name = 'restaurant/cook_form.html'
-    success_url = reverse_lazy('cook-list')
+    success_url = reverse_lazy("restaurant:cook-list")
+
+
+class DishListView(LoginRequiredMixin,generic.ListView):
+    model = Dish
+    context_object_name = 'dishes'
+    template_name = 'restaurant/dish_list.html'
+    paginate_by = 5
+
+
+class DishCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Dish
+    fields = "__all__"
+    template_name = 'restaurant/dish_form.html'
+    success_url = reverse_lazy("restaurant:dish-list")
+
+
+class DishDetailView(generic.DetailView):
+    model = Cook
+    context_object_name = 'dishes'
+    template_name = 'restaurant/dish_detail.html'
+    success_url = ("restaurant:dish-list")
+
+
+
+

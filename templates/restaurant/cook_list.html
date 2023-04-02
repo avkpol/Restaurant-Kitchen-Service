@@ -8,7 +8,7 @@
       </a>
    </h1>
 
-    {% if cook_list %}
+    {% if cooks %}
     <table class="table">
       <tr>
         <th>ID</th>
@@ -17,7 +17,7 @@
         <th>Last name</th>
 
       </tr>
-    {% for cook in cook_list %}
+    {% for cook in cooks %}
       <tr>
         <td>{{ cook.id }}</td>
         <td><a href="{{ cook.get_absolute_url }}">{{ cook.username }} {% if user == cook %} (Me){% endif %}</a></td>
