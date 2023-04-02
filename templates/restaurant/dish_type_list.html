@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>
+    List of Dish Types
+    <a href="{% url 'restaurant:dish-type-form' %}" class="btn btn-outline-primary link-to-page">
+      + new dish type
+    </a>
+  </h1>
+
+  {% if dish_types %}
+    <table class="table">
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+
+      </tr>
+
+      {% for dish in dish_types %}
+        <tr>
+          <td>
+              {{ dish.id }}
+          </td>
+          <td>
+              {{ dish.name }}
+          </td>
+
+          <td>
+{#              <a href="{% url 'restaurant:dish-update' pk=dish.id %}">#}
+{#                Update#}
+{#              </a>#}
+{#            </td>#}
+{#            <td>#}
+{#              <a style="color: red"#}
+{#                href="{% url 'restaurant:dish-type-delete' pk=dish.id %}">#}
+{#                DELETE#}
+{#              </a>#}
+{#            </td>#}
+        </tr>
+      {% endfor %}
+    </table>
+
+  {% else %}
+      <p>There are no dish types in the kitchen service list .</p>
+  {% endif %}
+{% endblock %}
