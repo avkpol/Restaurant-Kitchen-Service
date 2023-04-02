@@ -5,27 +5,28 @@
     Username: {{ cook.username }}
   </h1>
 
-  <p><strong>First name:</strong> {{ driver.first_name }}</p>
-  <p><strong>Last name:</strong> {{ driver.last_name }}</p>
-  <p><strong>Is staff:</strong> {{ driver.is_staff }}</p>
+  <p><strong>First name:</strong> {{ cook.first_name }}</p>
+  <p><strong>Last name:</strong> {{ cook.last_name }}</p>
+  <p><strong>Is staff:</strong> {{ cook.is_staff }}</p>
 
   <div class="ml-3">
-    <h4>Cars</h4>
+    <h4>Dishes</h4>
 
-    {% for car in driver.cars.all %}
-        <hr>
-        <p><strong>Model:</strong> {{ car.model }}</p>
-        <p><strong>Manufacturer:</strong> {{ car.manufacturer.name }}</p>
-        <p class="text-muted"><strong>Id:</strong> {{car.id}}</p>
-
-    {% empty %}
-      <p>No cars!</p>
-    {% endfor %}
+{#    {% for dish in cook.dishes.all %}#}
+{#        <hr>#}
+{#        <p><strong>Dish name:</strong> {{ dish.name }}</p>#}
+{#        <p><strong>Dish price:</strong> {{ dish.dish_type.name }}</p>#}
+{#        <p><strong>Dish description:</strong> {{ dish.description }}</p>#}
+{#        <p class="text-muted"><strong>Id:</strong> {{dish.id}}</p>#}
+{##}
+{#    {% empty %}#}
+{#      <p>No dishes!</p>#}
+{#    {% endfor %}#}
   </div>
-  <a href="{% url 'restaurant:cook-update'  pk=driver.id %}" class="btn btn-primary">
-        Update license
-  </a>
-   <a href="{% url 'restaurant:cook-delete'  pk=driver.id %}" class="btn btn-danger">
-        Delete driver
-  </a>
+{#  <a href="{% url 'restaurant:cook-update'  pk=cook.id %}" class="btn btn-secondary">#}
+{#        Update cook#}
+{#  </a>#}
+{#   <a href="{% url 'restaurant:cook-delete'  pk=cook.id %}" class="btn btn-danger">#}
+{#        Delete cook#}
+{#  </a>#}
 {% endblock %}

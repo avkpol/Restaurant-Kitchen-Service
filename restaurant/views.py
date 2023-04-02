@@ -38,15 +38,23 @@ class CookListView(generic.ListView):
 
 class CookDetailView(generic.DetailView):
     model = Cook
+    queryset = Cook.objects.all().prefetch_related("dish_set__dish_typegit")
     context_object_name = 'cook'
     template_name = 'restaurant/cook_detail.html'
-    success_url = ("restaurant:cook-list")
+    success_url = reverse_lazy("restaurant:cook-list")
+
 
 
 class CookCreateView(LoginRequiredMixin, generic.CreateView):
     model = Cook
     fields = ['years_of_experience', 'username', 'email', 'password', 'first_name', 'last_name']
     template_name = 'restaurant/cook_form.html'
+    success_url = reverse_lazy("restaurant:cook-list")
+
+
+class CookUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Cook
+    fields = ("username", "first_name", "last_name", "email",)
     success_url = reverse_lazy("restaurant:cook-list")
 
 
