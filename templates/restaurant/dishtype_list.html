@@ -13,10 +13,11 @@
       <tr>
         <th>ID</th>
         <th>Name</th>
+        <th>DELETE</th>
 
       </tr>
 
-      {% for dish in dish_types %}
+      {% for dish_type in dish_types %}
         <tr>
           <td>
               {{ dish.id }}
@@ -26,16 +27,11 @@
           </td>
 
           <td>
-{#              <a href="{% url 'restaurant:dish-update' pk=dish.id %}">#}
-{#                Update#}
-{#              </a>#}
-{#            </td>#}
-{#            <td>#}
-{#              <a style="color: red"#}
-{#                href="{% url 'restaurant:dish-type-delete' pk=dish.id %}">#}
-{#                DELETE#}
-{#              </a>#}
-{#            </td>#}
+              <a style="color: red"
+                href="{% url 'restaurant:dish-type-delete' pk=dish_type.id %}">
+                DELETE
+              </a>
+            </td>
         </tr>
       {% endfor %}
     </table>

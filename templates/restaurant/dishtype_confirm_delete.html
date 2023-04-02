@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Delete the type of dishes?</h1>
+  <p>Are you sure you really want to delete this type of dishes?</p>
+  <p><strong>All dependencies will also be deleted!</strong></p>
+  <form action="" method="post" novalidate>
+    {% csrf_token %}
+
+    <input type="submit" value="Yes, Delete this dish type" class="btn btn-danger">
+  </form>
+{% endblock %}
