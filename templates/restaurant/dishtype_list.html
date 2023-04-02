@@ -3,12 +3,12 @@
 {% block content %}
   <h1>
     List of Dish Types
-    <a href="{% url 'restaurant:dish-type-form' %}" class="btn btn-outline-primary link-to-page">
+    <a href="{% url 'restaurant:dishtype-form' %}" class="btn btn-outline-primary link-to-page">
       + new dish type
     </a>
   </h1>
 
-  {% if dish_types %}
+  {% if dishtypes %}
     <table class="table">
       <tr>
         <th>ID</th>
@@ -17,18 +17,18 @@
 
       </tr>
 
-      {% for dish_type in dish_types %}
+      {% for dishtype in dishtypes %}
         <tr>
           <td>
-              {{ dish.id }}
+              {{ dishtype.id }}
           </td>
           <td>
-              {{ dish.name }}
+              {{ dishtype.name }}
           </td>
 
           <td>
               <a style="color: red"
-                href="{% url 'restaurant:dish-type-delete' pk=dish_type.id %}">
+                href="{% url 'restaurant:dishtype-delete' pk=dishtype.id %}">
                 DELETE
               </a>
             </td>

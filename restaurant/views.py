@@ -14,7 +14,7 @@ def index(request):
 
     num_cooks = Cook.objects.count()
     num_dishes = Dish.objects.count()
-    num_dish_types = DishType.objects.count()
+    num_dishtypes = DishType.objects.count()
 
     num_visits = request.session.get("num_visits", 0)
     request.session["num_visits"] = num_visits + 1
@@ -22,7 +22,7 @@ def index(request):
     context = {
         "num_cooks": num_cooks,
         "num_dishes": num_dishes,
-        "num_dish_types": num_dish_types,
+        "num_dishtypes": num_dishtypes,
         "num_visits": num_visits + 1,
     }
 
@@ -38,8 +38,8 @@ class CookListView(generic.ListView):
 
 class CookDetailView(generic.DetailView):
     model = Cook
-    queryset = Cook.objects.all().prefetch_related("dish_set__dish_typegit")
-    context_object_name = 'cook'
+    queryset = Cook.objects.all().prefetch_related("dish_set__dish_type")
+    context_object_name = 'cooks'
     template_name = 'restaurant/cook_detail.html'
     success_url = reverse_lazy("restaurant:cook-list")
 
@@ -75,7 +75,7 @@ class DishDetailView(LoginRequiredMixin, generic.DetailView):
     model = Cook
     context_object_name = 'dishes'
     template_name = 'restaurant/dish_detail.html'
-    success_url = ("restaurant:dish-list")
+    success_url = reverse_lazy("restaurant:dish-list")
 
 
 class DishDeleteView(LoginRequiredMixin, generic.DeleteView):
@@ -86,30 +86,32 @@ class DishDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 class DishTypeListView(generic.ListView):
     model = DishType
-    context_object_name = "dish_types"
-    template_name = 'restaurant/dish_type_list.html'
+    context_object_name = "dishtypes"
+    template_name = 'restaurant/dishtype_list.html'
     paginate_by = 5
 
 
 class DishTypeDetailView(generic.DetailView):
     model = DishType
     context_object_name = 'dish_type'
-    template_name = 'restaurant/dish_type_detail.html'
-    success_url = reverse_lazy("restaurant:dish_type_list")
+    template_name = 'restaurant/dishtype_detail.html'
+    success_url = reverse_lazy("restaurant:dishtype_list")
 
 
 class DishTypeCreateView(LoginRequiredMixin, generic.CreateView):
     model = DishType
     fields = "__all__"
-    template_name = 'restaurant/dish_type_form.html'
-    success_url = reverse_lazy("restaurant:dish-type-list")
+    template_name = 'restaurant/dishtype_form.html'
+    success_url = reverse_lazy("restaurant:dishtype-list")
 
 
 class DishTypeUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = DishType
     fields = "__all__"
-    success_url = reverse_lazy("restaurant:dish_type_list")
+    success_url = reverse_lazy("restaurant:dishtype-list")
 
-
+class DishTypeDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = DishType
+    success_url = reverse_lazy("restaurant:dishtype-list")
 
 
