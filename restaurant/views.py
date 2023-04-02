@@ -58,7 +58,7 @@ class CookUpdateView(LoginRequiredMixin, generic.UpdateView):
     success_url = reverse_lazy("restaurant:cook-list")
 
 
-class DishListView(LoginRequiredMixin,generic.ListView):
+class DishListView(LoginRequiredMixin, generic.ListView):
     model = Dish
     context_object_name = 'dishes'
     template_name = 'restaurant/dish_list.html'
@@ -72,11 +72,17 @@ class DishCreateView(LoginRequiredMixin, generic.CreateView):
     success_url = reverse_lazy("restaurant:dish-list")
 
 
-class DishDetailView(generic.DetailView):
+class DishDetailView(LoginRequiredMixin, generic.DetailView):
     model = Cook
     context_object_name = 'dishes'
     template_name = 'restaurant/dish_detail.html'
     success_url = ("restaurant:dish-list")
+
+
+class DishDeleteView(LoginRequiredMixin, generic.DeleteView):
+
+    model = Dish
+    success_url = reverse_lazy("restaurant:dish-list")
 
 
 
