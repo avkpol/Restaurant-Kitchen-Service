@@ -13,6 +13,10 @@ from .views import (
     DishTypeListView,
     DishTypeCreateView,
     DishTypeDeleteView,
+    IngredientListView,
+    IngredientCreateView,
+    # IngredientDetailView,
+    IngredientsForDishView, IngredientDetailView, DishAssignCookView,
 )
 
 urlpatterns = [
@@ -29,6 +33,19 @@ urlpatterns = [
     path("dishtypes/", DishTypeListView.as_view(), name="dishtype-list"),
     path("dishtypes/create", DishTypeCreateView.as_view(), name="dishtype-form"),
     path("dishtypes/<int:pk>/delete", DishTypeDeleteView.as_view(), name="dishtype-delete"),
+    path("ingredients/", IngredientListView.as_view(), name="ingredient-list"),
+    path("ingredients/create", IngredientCreateView.as_view(), name="ingredient-form"),
+    path("ingredients/<int:pk>", IngredientDetailView.as_view(), name="ingredient-detail"),
+    # path("ingredients/<int:pk>/", IngredientDetailView.as_view(), name="ingredient-detail"),
+    path('dishes/<int:pk>/ingredients/', IngredientsForDishView.as_view(), name='ingredients-for-dish'),
+    path(
+        "dishes/<int:pk>/assign-me/",
+        DishAssignCookView.as_view(),
+        name="dish-assign-cook",
+    ),
+
+
+
 ]
 
 app_name = "restaurant"

@@ -15,6 +15,7 @@
         <th>Name</th>
         <th>Price</th>
         <th>Dish type</th>
+        <th>Ingredients</th>
         <th>Update</th>
         <th>Delete</th>
       </tr>
@@ -25,13 +26,21 @@
               {{ dish.id }}
           </td>
           <td>
-              {{ dish.name }}
+            <a href="{% url 'restaurant:dish-detail' pk=dish.id %}">{{ dish.name }}</a>
           </td>
           <td>
               {{ dish.price }}
           </td>
           <td>
-              {{ dish.dish_type_id }}
+              {{ dish.dish_type }}
+          </td>
+          <td>
+            {% for ingredient in dish.ingredients.all %}
+              {{ ingredient.name }}
+              {% if not forloop.last %}, {% endif %}
+            {% empty %}
+              None
+            {% endfor %}
           </td>
           <td>
 {#              <a href="{% url 'restaurant:dish-update' pk=dish.id %}">#}
@@ -51,4 +60,23 @@
   {% else %}
       <p>There are no dishes in the kitchen service list .</p>
   {% endif %}
+
+{#  {% if messages %}#}
+{#  <div class="alert alert-success" role="alert">#}
+{#    {% for message in messages %}#}
+{#      {{ message }}#}
+{#    {% endfor %}#}
+{#  </div>#}
+{#{% endif %}#}
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+{#            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>#}
+        </div>
+    {% endfor %}
+{% endif %}
+
+
 {% endblock %}
