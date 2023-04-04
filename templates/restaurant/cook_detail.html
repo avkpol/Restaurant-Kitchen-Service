@@ -1,61 +1,23 @@
-
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>
+  <h3>
     Username: {{ cook.username }}
-  </h1>
+  </h3>
 
   <p><strong>First name:</strong> {{ cook.first_name }}</p>
   <p><strong>Last name:</strong> {{ cook.last_name }}</p>
   <p><strong>Is staff:</strong> {{ cook.is_staff }}</p>
 
-  <div class="ml-3">
-    <h4>Dishes</h4>
-    {% if cook.dishes.all %}
-      <h2>Assigned Dishes:</h2>
-      <ul>
-        {% for dish in cook.dishes.all %}
-          <li>{{ dish.name }}</li>
-        {% endfor %}
-      </ul>
-    {% else %}
-      <p>No dishes assigned to this cook.</p>
-    {% endif %}
-    <p>Debug Info:</p>
-    <ul>
-      <li>Cook: {{ cook }}</li>
-      <li>Dishes: {{ cook.dishes.all }}</li>
-    </ul>
-  </div>
-{##}
-{#  <a href="{% url 'restaurant:cook-update' pk=cook.id %}" class="btn btn-secondary">#}
-{#    Update cook#}
-{#  </a>#}
-{#  <a href="{% url 'restaurant:cook-delete' pk=cook.id %}" class="btn btn-danger">#}
-{#    Delete cook#}
-{#  </a>#}
-
-
-
-  <h1>{{ dish.name }}</h1>
-  <p>{{ dish.description }}</p>
-  <p>Price: {{ dish.price }}</p>
-  <p>Type: {{ dish.dish_type }}</p>
-  <h2>Assigned Cooks:</h2>
+{% if dishes %}
+  <h4>Assigned Dishes:</h4>
   <ul>
-    {% for cook in dish.cooks.all %}
-      <li>{{ cook.username }}</li>
-    {% empty %}
-      <li>No cooks assigned</li>
+    {% for dish in dishes %}
+      <li style="color: chocolate">{{ dish.name }}</li>
     {% endfor %}
   </ul>
-
-
-
-
+{% else %}
+  <p>No dishes assigned to this cook.</p>
+{% endif %}
 
 {% endblock %}
-
-
-

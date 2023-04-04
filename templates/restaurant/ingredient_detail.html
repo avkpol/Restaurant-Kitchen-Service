@@ -1,55 +1,13 @@
 {% extends "base.html" %}
-
 {% block content %}
 
-<h1>Name: {{ ingredient.name }}</h1>
+<h2>Name: {{ ingredient.name }}</h2>
 
-  <div class="ml-3">
-    <h5>Dishes that contain this ingredient: </h5>
-   {% if dishes %}
-      {% for dish in dishes %}
-             <p style="color: darkgreen" >{{ dish.name }}</p>
-              {% if not forloop.last %} {% endif %}
-        {% endfor %}
-    {% else %}
-      <p>No dishes!</p>
-    {% endif %}
-
-
-{#      {% for dish in dishes %}#}
-{#        <hr>#}
-{#        <p><strong>Dish name:</strong> {{ dish.name }}</p>#}
-{#      {% endfor %}#}
-{#    #}
-  </div>
-
-
-
-{#  <div class="ml-3">#}
-{#    <h4>Dishes</h4>#}
-{##}
-{#    {% if ingredient.dishes.exists %}#}
-{#      {% for dish in ingredient.dishes.all %}#}
-{#        <hr>#}
-{#        <p><strong>Dish name:</strong> {{ dish.name }}</p>#}
-{#      {% endfor %}#}
-{#    {% else %}#}
-{#      <p>No dishes!</p>#}
-{#    {% endif %}#}
-{#  </div>#}
-{##}
-{#  <h2>Dishes:</h2>#}
-{#<ul>#}
-{#{% for dish in ingredient.dishes.all %}#}
-{#    <li>{{ dish }}</li>#}
-{#{% endfor %}#}
-{#</ul>#}
+  <h3>Dishes with this ingredient:</h3>
+<ul>
+{% for dish in ingredient.dishes.all %}
+    <li style="color: chocolate">{{ dish }}</li>
+{% endfor %}
+</ul>
 {% endblock %}
-
-{#  <a href="{% url 'restaurant:cook-update'  pk=cook.id %}" class="btn btn-secondary">#}
-{#        Update cook#}
-{#  </a>#}
-{#   <a href="{% url 'restaurant:cook-delete'  pk=cook.id %}" class="btn btn-danger">#}
-{#        Delete cook#}
-{#  </a>#}
 

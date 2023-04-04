@@ -12,7 +12,6 @@ from .forms import (
     DishAssignCookForm,
     DishSearchForm,
     DishTypeSearchForm,
-    IngredientForm,
     IngredientSearchForm,
 )
 from .models import DishType, Dish, Cook, Ingredient
@@ -66,6 +65,11 @@ class CookDetailView(generic.DetailView):
     context_object_name = 'cook'
     template_name = 'restaurant/cook_detail.html'
     success_url = reverse_lazy("restaurant:cook-list")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['dishes'] = Dish.objects.filter(cooks=self.object)
+        return context
 
 
 class CookCreateView(LoginRequiredMixin, generic.CreateView):
@@ -124,7 +128,7 @@ class DishCreateView(LoginRequiredMixin, generic.CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['ingredient_form'] = IngredientForm()
+        context['available_dish_types'] = DishType.objects.all()
         return context
 
 
@@ -146,11 +150,9 @@ class DishUpdateView(LoginRequiredMixin, generic.UpdateView):
     success_url = reverse_lazy("restaurant:dish-list")
 
 
-
 class DishDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Dish
     success_url = reverse_lazy("restaurant:dish-list")
-
 
 
 class DishTypeListView(generic.ListView):
@@ -190,6 +192,7 @@ class DishTypeUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = DishType
     fields = "__all__"
     success_url = reverse_lazy("restaurant:dishtype-list")
+
 
 class DishTypeDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = DishType
@@ -237,7 +240,6 @@ class IngredientDeleteView(LoginRequiredMixin, generic.DeleteView):
     success_url = reverse_lazy("restaurant:ingredient-list")
 
 
-
 class IngredientsForDishView(View):
     def get(self, request, *args, **kwargs):
         dish = get_object_or_404(Dish, pk=kwargs['pk'])
@@ -250,7 +252,6 @@ class DishAssignCookView(RedirectView):
     url = reverse_lazy("restaurant:dish-list")
 
     def post(self, request, *args, **kwargs):
-
         dish = get_object_or_404(Dish, pk=self.kwargs["pk"])
         cook_id = request.POST.get("cook_id")
         if cook_id:
@@ -262,13 +263,13 @@ class DishAssignCookView(RedirectView):
                 if cook in dish.cooks.all():
                     dish.cooks.remove(cook)
                     messages.success(
-                        request, f"{cook} has been removed from {dish.name}",
+                        request, f"Cook {cook} no more responsible for {dish.name}",
                         extra_tags="alert alert-danger"
                     )
                 else:
                     dish.cooks.add(cook)
                     messages.success(
-                        request, f"{cook} has been assigned to {dish.name}",
+                        request, f"{dish.name} has been assigned to cook {cook} ",
                         extra_tags="alert alert-success"
                     )
         else:

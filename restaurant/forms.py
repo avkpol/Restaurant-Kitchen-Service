@@ -1,5 +1,5 @@
 from django import forms
-from .models import Ingredient, Dish, Cook
+from .models import Ingredient, Dish, Cook, DishType
 
 
 class IngredientForm(forms.ModelForm):
@@ -13,6 +13,7 @@ class IngredientForm(forms.ModelForm):
 
 class DishForm(forms.ModelForm):
     ingredients = forms.ModelMultipleChoiceField(queryset=Ingredient.objects.all(), widget=forms.CheckboxSelectMultiple)
+    dish_type = forms.ModelChoiceField(queryset=DishType.objects.all())
 
     class Meta:
         model = Dish
@@ -23,7 +24,6 @@ class DishForm(forms.ModelForm):
 class DishAssignCookForm(forms.ModelForm):
     cooks = forms.ModelMultipleChoiceField(
         queryset=Cook.objects.filter(groups__name='Cook'),
-        # widget=forms.CheckboxSelectMultiple
         widget=forms.RadioSelect,
 
     )

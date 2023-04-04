@@ -20,17 +20,6 @@ class Ingredient(models.Model):
         return self.name
 
 
-# class Dish(models.Model):
-#     name = models.CharField(max_length=100)
-#     description = models.TextField(blank=True)
-#     price = models.DecimalField(max_digits=8, decimal_places=2)
-#     dish_type = models.CharField(max_length=100)
-#     cooks = models.ManyToManyField(Cook, blank=True)
-#     ingredients = models.ManyToManyField(
-#         Ingredient, through='DishIngredient', related_name='dishes'
-#     )
-
-
 class Dish(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
@@ -41,12 +30,12 @@ class Dish(models.Model):
         Ingredient, through='DishIngredient', related_name='dishes'
     )
 
+    def __str__(self):
+        return self.name
+
     @property
     def available_cooks(self):
         return Cook.objects.exclude(pk__in=self.cooks.all().values_list('pk', flat=True))
-
-
-
 
 
 class DishIngredient(models.Model):
