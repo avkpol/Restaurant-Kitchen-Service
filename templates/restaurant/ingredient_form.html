@@ -1,40 +1,27 @@
-{#{% extends "base.html" %}#}
-{#{% load crispy_forms_filters %}#}
-{#{% load crispy_forms_tags %}#}
-{##}
-{#{% block content %}#}
-{#  <h1>{{ object|yesno:"Update,Create" }} ingredient</h1>#}
-{#  <form action="" method="post" novalidate>#}
-{#    {% csrf_token %}#}
-{#    {{ form|crispy }}#}
-{##}
-{#    <input type="submit" value="Submit" class="btn btn-outline-secondary">#}
-{#  </form>#}
-{##}
-{#{% endblock %}#}
-
 {% extends "base.html" %}
+{% load crispy_forms_filters %}
+<h1>New Dish Ingredient</h1>
 
 {% block content %}
-  <h1>New Dish</h1>
-
-  <form method="post">
+  <h1>{{ object|yesno:"Update, Create" }} dish ingredient</h1>
+  <form action="" method="post" novalidate>
     {% csrf_token %}
-    {{ form.as_p }}
+    {{ form|crispy }}
 
-    <h2>Ingredients</h2>
-
+    <input type="submit" value="Submit" class="btn btn-outline-secondary">
+  </form>
+   <form>
     <ul>
       {% for ingredient in form.ingredients %}
         <li>
           {{ ingredient }}
           {% if ingredient.value %}
-{#            (<a href="{% url 'restaurant:ingredient-dishes' ingredient.value %}">view dishes</a>)#}
+            (<a href="{% url 'restaurant:ingredient-dishes' ingredient.value %}">view dishes</a>)
           {% endif %}
         </li>
       {% endfor %}
     </ul>
 
-    <button type="submit">Create</button>
+
   </form>
 {% endblock %}

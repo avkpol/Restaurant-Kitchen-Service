@@ -1,37 +1,63 @@
 {% extends "base.html" %}
+{% load crispy_forms_filters %}
 
 {% block content %}
-    <h1>Cooks List
-
-      <a href="{% url 'restaurant:cook-form' %}" class="btn btn-outline-primary link-to-page">
-        + new cook
-      </a>
-   </h1>
-
-    {% if cooks %}
+  <h1>Cooks List
+    <a href="{% url 'restaurant:cook-form' %}" class="btn btn-outline-primary link-to-page">
+      + new cook
+    </a>
+  </h1>
+  <br>
+  <br>
+  <form action="" method="get" class="form-inline">
+      {{ search_form|crispy }}
+      <input class="btn btn-secondary " type="submit" value="&#128269;">
+    </form>
+  <br>
+  <br>
+  {% if cooks %}
     <table class="table">
-      <tr>
-        <th>ID</th>
-        <th>Username</th>
-        <th>First name</th>
-        <th>Last name</th>
-
-      </tr>
-    {% for cook in cooks %}
-      <tr>
-        <td>{{ cook.id }}</td>
-        <td><a href="{% url 'restaurant:cook-detail' pk=cook.id %}">{{ cook.username }} {% if user == cook %} (Me){% endif %}</a></td>
-        <td>{{ cook.first_name }}</td>
-        <td>{{ cook.last_name }}</td>
-{#        <td>{{ cook.license_number }}</td>#}
-      </tr>
-    {% endfor %}
-
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Username</th>
+          <th>First name</th>
+          <th>Last name</th>
+          <th>Update</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for cook in cooks %}
+          <tr>
+            <td>{{ cook.id }}</td>
+            <td>
+              <a href="{% url 'restaurant:cook-detail' pk=cook.id %}">
+                {{ cook.username }}
+                {% if user == cook %} (Me){% endif %}
+              </a>
+            </td>
+            <td>{{ cook.first_name }}</td>
+            <td>{{ cook.last_name }}</td>
+            <td>
+              <a href="{% url 'restaurant:cook-form' pk=cook.id %}" >
+                UPDATE
+              </a>
+            </td>
+            <td>
+              <a style="color: red" href="{% url 'restaurant:cook-confirm-delete' pk=cook.id %}">
+                DELETE
+              </a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
     </table>
-    {% else %}
-      <p>There are no cooks in the service.</p>
-    {% endif %}
+  {% else %}
+    <p>There are no cooks in the service.</p>
+  {% endif %}
 {% endblock %}
+
 
 {#{% extends "base.html" %}#}
 {##}

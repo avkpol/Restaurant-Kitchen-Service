@@ -1,13 +1,20 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.contrib.auth.models import User
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse_lazy
 from django.views import generic, View
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import RedirectView
 
-from .forms import IngredientForm, DishForm, DishAssignCookForm
+from .forms import (
+    CookSearchForm,
+    DishForm,
+    DishAssignCookForm,
+    DishSearchForm,
+    DishTypeSearchForm,
+    IngredientForm,
+    IngredientSearchForm,
+)
 from .models import DishType, Dish, Cook, Ingredient
 
 
@@ -41,9 +48,21 @@ class CookListView(generic.ListView):
     paginate_by = 5
 
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["search_form"] = CookSearchForm()
+        return context
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        name = self.request.GET.get("name")
+        if name:
+            queryset = queryset.filter(username__icontains=name)
+        return queryset
+
+
 class CookDetailView(generic.DetailView):
     model = Cook
-    # queryset = Cook.objects.all().prefetch_related("dish_set__dish_type")
     context_object_name = 'cook'
     template_name = 'restaurant/cook_detail.html'
     success_url = reverse_lazy("restaurant:cook-list")
@@ -84,6 +103,18 @@ class DishListView(LoginRequiredMixin, generic.ListView):
     template_name = 'restaurant/dish_list.html'
     paginate_by = 5
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["search_form"] = DishSearchForm()
+        return context
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        name = self.request.GET.get("name")
+        if name:
+            queryset = queryset.filter(name__icontains=name)
+        return queryset
+
 
 class DishCreateView(LoginRequiredMixin, generic.CreateView):
     model = Dish
@@ -109,6 +140,11 @@ class DishDetailView(generic.DetailView):
         return context
 
 
+class DishUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Dish
+    fields = "__all__"
+    success_url = reverse_lazy("restaurant:dish-list")
+
 
 
 class DishDeleteView(LoginRequiredMixin, generic.DeleteView):
@@ -122,6 +158,18 @@ class DishTypeListView(generic.ListView):
     context_object_name = "dishtypes"
     template_name = 'restaurant/dishtype_list.html'
     paginate_by = 5
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["search_form"] = DishTypeSearchForm()
+        return context
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        name = self.request.GET.get("name")
+        if name:
+            queryset = queryset.filter(name__icontains=name)
+        return queryset
 
 
 class DishTypeDetailView(generic.DetailView):
@@ -153,23 +201,42 @@ class IngredientListView(LoginRequiredMixin, generic.ListView):
     context_object_name = "ingredients"
     paginate_by = 10
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["search_form"] = IngredientSearchForm()
+        return context
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        name = self.request.GET.get("name")
+        if name:
+            queryset = queryset.filter(name__icontains=name)
+        return queryset
+
 #
 class IngredientDetailView(LoginRequiredMixin, generic.DetailView):
     model = Ingredient
     template_name = 'restaurant/ingredient_detail.html'
     context_object_name = 'ingredient'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        ingredient = context['ingredient']
-        context['dishes'] = ingredient.dishes.all()
-        return context
-
 
 class IngredientCreateView(LoginRequiredMixin, generic.CreateView):
     model = Ingredient
     fields = "__all__"
     success_url = reverse_lazy("restaurant:ingredient-list")
+
+
+class IngredientUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Ingredient
+    fields = "__all__"
+    success_url = reverse_lazy("restaurant:ingredient-list")
+
+
+class IngredientDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Ingredient
+    success_url = reverse_lazy("restaurant:ingredient-list")
+
+
 
 class IngredientsForDishView(View):
     def get(self, request, *args, **kwargs):

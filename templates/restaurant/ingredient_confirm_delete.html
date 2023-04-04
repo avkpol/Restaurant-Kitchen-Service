@@ -1,10 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Delete this ingredient?</h1>
+  <p>Are you sure you really want to delete this ingredient?</p>
+  <p><strong>All ingredients`s dependencies will also be deleted!</strong></p>
+  <form action="" method="post" novalidate>
+    {% csrf_token %}
+
+    <input type="submit" value="Yes, Delete this ingredient" class="btn btn-danger">
+  </form>
+{% endblock %}

@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load crispy_forms_filters %}
 
 {% block content %}
   <h1>
@@ -7,12 +8,20 @@
       + new dish type
     </a>
   </h1>
-
+  <br>
+  <br>
+  <form action="" method="get" class="form-inline">
+      {{ search_form|crispy }}
+      <input class="btn btn-secondary " type="submit" value="&#128269;">
+  </form>
+  <br>
+  <br>
   {% if dishtypes %}
     <table class="table">
       <tr>
         <th>ID</th>
         <th>Name</th>
+        <th>UPDATE</th>
         <th>DELETE</th>
 
       </tr>
@@ -27,16 +36,22 @@
           </td>
 
           <td>
+              <a href="{% url 'restaurant:dishtype-form' pk=dishtype.id %}">
+                UPDATE
+              </a>
+          </td>
+
+          <td>
               <a style="color: red"
-                href="{% url 'restaurant:dishtype-delete' pk=dishtype.id %}">
+                href="{% url 'restaurant:dishtype-confirm-delete' pk=dishtype.id %}">
                 DELETE
               </a>
-            </td>
+          </td>
         </tr>
       {% endfor %}
     </table>
 
   {% else %}
-      <p>There are no dish types in the kitchen service list .</p>
+      <p>There are no dish types in the kitchen service list.</p>
   {% endif %}
 {% endblock %}

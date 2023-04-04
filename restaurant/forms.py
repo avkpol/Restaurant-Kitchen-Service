@@ -37,3 +37,46 @@ class DishAssignCookForm(forms.ModelForm):
         cooks = cleaned_data.get("cooks")
         if not cooks:
             raise forms.ValidationError("Please select at least one cook.")
+
+
+class CookSearchForm(forms.Form):
+    name = forms.CharField(
+        max_length=150,
+        required=False,
+        label="",
+        widget=forms.TextInput(
+            attrs={"placeholder": "Search by username:"}
+        ),
+    )
+
+
+class DishSearchForm(forms.Form):
+    name = forms.CharField(
+        max_length=150,
+        required=False,
+        label="",
+        widget=forms.TextInput(
+            attrs={"placeholder": "Search by dish name:"}
+        ),
+    )
+
+class DishTypeSearchForm(forms.Form):
+    name = forms.CharField(
+        max_length=150,
+        required=False,
+        label="",
+        widget=forms.TextInput(
+            attrs={"placeholder": "Search by dish type name:"}
+        ),
+    )
+
+
+class IngredientSearchForm(forms.Form):
+    name = forms.CharField(
+        max_length=150,
+        required=False,
+        label="",
+        widget=forms.TextInput(
+            attrs={"placeholder": "Search by ingredient name:"}
+        ),
+    )

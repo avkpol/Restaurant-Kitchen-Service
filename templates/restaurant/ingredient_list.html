@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load crispy_forms_filters %}
 
 {% block content %}
     <h1>Ingredient List
@@ -7,6 +8,15 @@
         + new ingredient
       </a>
    </h1>
+  <br>
+  <br>
+   <form action="" method="get" class="form-inline">
+      {{ search_form|crispy }}
+      <input class="btn btn-secondary " type="submit" value="&#128269;">
+  </form>
+  <br>
+  <br>
+
 
     {% if ingredients %}
     <table class="table">
@@ -14,6 +24,7 @@
         <th>ID</th>
         <th>Name</th>
         <th>Part of which dish</th>
+        <th>UPDATE</th>
         <th>DELETE</th>
 
       </tr>
@@ -21,8 +32,15 @@
       <tr>
         <td>{{ ingredient.id }}</td>
         <td><a href="{% url 'restaurant:ingredient-detail' pk=ingredient.id %}">{{ ingredient.name }} </a></td>
-
-{#        <td>{{ cook.license_number }}</td>#}
+        <td>
+          {% for dish in ingredient.dishes.all %}
+            {{ dish.name }}{% if not forloop.last %}, {% endif %}
+          {% empty %}
+            None
+          {% endfor %}
+        </td>
+        <td><a  href="{% url 'restaurant:ingredient-form' pk=ingredient.id %}">UPDATE</a></td>
+        <td><a style="color: red" href="{% url 'restaurant:ingredient-confirm-delete' pk=ingredient.id %}">DELETE</a></td>
       </tr>
     {% endfor %}
 
@@ -31,5 +49,3 @@
       <p>There are no ingredients in the service.</p>
     {% endif %}
 {% endblock %}
-
-

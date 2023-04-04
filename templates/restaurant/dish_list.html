@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load crispy_forms_filters %}
 
 {% block content %}
   <h1>
@@ -7,7 +8,14 @@
       + new dish
     </a>
   </h1>
-
+  <br>
+  <br>
+   <form action="" method="get" class="form-inline">
+      {{ search_form|crispy }}
+      <input class="btn btn-secondary " type="submit" value="&#128269;">
+    </form>
+  <br>
+  <br>
   {% if dishes %}
     <table class="table">
       <tr>
@@ -43,13 +51,13 @@
             {% endfor %}
           </td>
           <td>
-{#              <a href="{% url 'restaurant:dish-update' pk=dish.id %}">#}
-{#                Update#}
-{#              </a>#}
-{#            </td>#}
-{#            <td>#}
+              <a href="{% url 'restaurant:dish-form' pk=dish.id %}">
+                UPDATE
+              </a>
+            </td>
+            <td>
               <a style="color: red"
-                href="{% url 'restaurant:dish-delete' pk=dish.id %}">
+                href="{% url 'restaurant:dish-confirm-delete' pk=dish.id %}">
                 DELETE
               </a>
             </td>
@@ -73,7 +81,7 @@
     {% for message in messages %}
         <div class="{{ message.tags }} alert-dismissible fade show" role="alert">
             {{ message }}
-{#            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>#}
+
         </div>
     {% endfor %}
 {% endif %}
