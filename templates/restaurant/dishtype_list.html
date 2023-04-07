@@ -1,7 +1,19 @@
-{% extends "base.html" %}
+{% extends "base_presentation.html" %}
 {% load crispy_forms_filters %}
 
 {% block content %}
+  <form class="navbar-search form-inline" id="navbar-search-main">
+      <div class="input-group input-group-merge search-bar">
+
+          <form action="" method="get" class="form-inline">
+            {{ search_form|crispy }}
+            <input class="btn btn-secondary " type="submit" value="&#128269;">
+          </form>
+
+      </div>
+    </form>
+  <br>
+  <br>
   <h1>
     List of Dish Types
     <a href="{% url 'restaurant:dishtype-form' %}" class="btn btn-outline-primary link-to-page">
@@ -10,10 +22,10 @@
   </h1>
   <br>
   <br>
-  <form action="" method="get" class="form-inline">
-      {{ search_form|crispy }}
-      <input class="btn btn-secondary " type="submit" value="&#128269;">
-  </form>
+{#  <form action="" method="get" class="form-inline">#}
+{#      {{ search_form|crispy }}#}
+{#      <input class="btn btn-secondary " type="submit" value="&#128269;">#}
+{#  </form>#}
   <br>
   <br>
   {% if dishtypes %}
@@ -32,7 +44,10 @@
               {{ dishtype.id }}
           </td>
           <td>
-              {{ dishtype.name }}
+             <a style="color: saddlebrown "href="{% url 'restaurant:dishtype-detail' pk=dishtype.id %}">
+                 {{ dishtype.name }}
+              </a>
+
           </td>
 
           <td>

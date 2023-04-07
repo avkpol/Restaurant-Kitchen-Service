@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base_presentation.html" %}
 {% load crispy_forms_filters %}
 {% load crispy_forms_tags %}
 
@@ -7,8 +7,11 @@
   <form action="" method="post" novalidate>
     {% csrf_token %}
     {{ form|crispy }}
-
+      <br>
+      <br>
     <input type="submit" value="Submit" class="btn btn-outline-secondary">
+
+
   </form>
 
 {% endblock %}

@@ -1,7 +1,19 @@
-{% extends "base.html" %}
+{% extends "base_presentation.html"%}
 {% load crispy_forms_filters %}
 
 {% block content %}
+  <form class="navbar-search form-inline" id="navbar-search-main">
+      <div class="input-group input-group-merge search-bar">
+
+          <form action="" method="get" class="form-inline">
+            {{ search_form|crispy }}
+            <input class="btn btn-secondary " type="submit" value="&#128269;">
+          </form>
+
+      </div>
+    </form>
+  <br>
+  <br>
   <h1>
     List of Dishes
     <a href="{% url 'restaurant:dish-form' %}" class="btn btn-outline-primary link-to-page">
@@ -10,10 +22,10 @@
   </h1>
   <br>
   <br>
-   <form action="" method="get" class="form-inline">
-      {{ search_form|crispy }}
-      <input class="btn btn-secondary " type="submit" value="&#128269;">
-    </form>
+{#   <form action="" method="get" class="form-inline">#}
+{#      {{ search_form|crispy }}#}
+{#      <input class="btn btn-secondary " type="submit" value="&#128269;">#}
+{#    </form>#}
   <br>
   <br>
   {% if dishes %}
@@ -24,8 +36,8 @@
         <th>Price</th>
         <th>Dish type</th>
         <th>Ingredients</th>
-        <th>Update</th>
-        <th>Delete</th>
+        <th>UPDATE</th>
+        <th>DELETE</th>
       </tr>
 
       {% for dish in dishes %}
@@ -34,7 +46,7 @@
               {{ dish.id }}
           </td>
           <td>
-            <a href="{% url 'restaurant:dish-detail' pk=dish.id %}">{{ dish.name }}</a>
+            <a style="color: saddlebrown" href="{% url 'restaurant:dish-detail' pk=dish.id %}">{{ dish.name }}</a>
           </td>
           <td>
               {{ dish.price }}

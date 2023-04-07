@@ -7,25 +7,38 @@ class IngredientForm(forms.ModelForm):
         model = Ingredient
         fields = ("id",)
     dishes = forms.ModelMultipleChoiceField(
-        queryset=Dish.objects.all(), widget=forms.CheckboxSelectMultiple
+        queryset=Dish.objects.all(),
+        widget=forms.CheckboxSelectMultiple
     )
 
 
 class DishForm(forms.ModelForm):
-    ingredients = forms.ModelMultipleChoiceField(queryset=Ingredient.objects.all(), widget=forms.CheckboxSelectMultiple)
-    dish_type = forms.ModelChoiceField(queryset=DishType.objects.all())
+    ingredients = forms.ModelMultipleChoiceField(
+        queryset=Ingredient.objects.all(),
+        widget=forms.CheckboxSelectMultiple
+    )
+    dish_type = forms.ModelChoiceField(
+        queryset=DishType.objects.all()
+    )
 
     class Meta:
         model = Dish
-        fields = ("name", "dish_type", "description", "price", "ingredients")
+        fields = (
+            "name",
+            "dish_type",
+            "description",
+            "price",
+            "ingredients"
+        )
 
 
 
 class DishAssignCookForm(forms.ModelForm):
     cooks = forms.ModelMultipleChoiceField(
-        queryset=Cook.objects.filter(groups__name='Cook'),
-        widget=forms.RadioSelect,
-
+        queryset=Cook.objects.all(),
+        # queryset=Cook.objects.filter(groups__name='Cook'),
+        # widget=forms.RadioSelect,
+        widget=forms.CheckboxSelectMultiple,
     )
 
     class Meta:
@@ -36,7 +49,9 @@ class DishAssignCookForm(forms.ModelForm):
         cleaned_data = super().clean()
         cooks = cleaned_data.get("cooks")
         if not cooks:
-            raise forms.ValidationError("Please select at least one cook.")
+            raise forms.ValidationError(
+                "Please select at least one cook."
+            )
 
 
 class CookSearchForm(forms.Form):

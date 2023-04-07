@@ -1,18 +1,26 @@
-{% extends "base.html" %}
+{% extends "base_presentation.html" %}
 {% load crispy_forms_filters %}
 
 {% block content %}
+
+    <form class="navbar-search form-inline" id="navbar-search-main">
+      <div class="input-group input-group-merge search-bar">
+
+          <form action="" method="get" class="form-inline">
+            {{ search_form|crispy }}
+            <input class="btn btn-secondary " type="submit" value="&#128269;">
+          </form>
+
+      </div>
+    </form>
+  <br>
+  <br>
   <h1>Cooks List
     <a href="{% url 'restaurant:cook-form' %}" class="btn btn-outline-primary link-to-page">
       + new cook
     </a>
   </h1>
-  <br>
-  <br>
-  <form action="" method="get" class="form-inline">
-      {{ search_form|crispy }}
-      <input class="btn btn-secondary " type="submit" value="&#128269;">
-    </form>
+
   <br>
   <br>
   {% if cooks %}
@@ -32,7 +40,7 @@
           <tr>
             <td>{{ cook.id }}</td>
             <td>
-              <a href="{% url 'restaurant:cook-detail' pk=cook.id %}">
+              <a style="color: saddlebrown" href="{% url 'restaurant:cook-detail' pk=cook.id %}">
                 {{ cook.username }}
                 {% if user == cook %} (Me){% endif %}
               </a>

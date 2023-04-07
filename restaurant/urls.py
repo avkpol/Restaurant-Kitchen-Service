@@ -13,6 +13,7 @@ from .views import (
     DishUpdateView,
     DishDeleteView,
     DishTypeListView,
+    DishTypeDetailView,
     DishTypeCreateView,
     DishTypeUpdateView,
     DishTypeDeleteView,
@@ -38,6 +39,7 @@ urlpatterns = [
     path("dishes/create", DishCreateView.as_view(), name="dish-form"),
     path("dishes/<int:pk>/delete", DishDeleteView.as_view(), name="dish-confirm-delete"),
     path("dishtypes/", DishTypeListView.as_view(), name="dishtype-list"),
+    path("dishtypes/<int:pk>/", DishTypeDetailView.as_view(), name="dishtype-detail"),
     path("dishtypes/create", DishTypeCreateView.as_view(), name="dishtype-form"),
     path("dishtypes/<int:pk>/delete", DishTypeDeleteView.as_view(), name="dishtype-confirm-delete"),
     path("dishtypes/<int:pk>/update", DishTypeUpdateView.as_view(), name="dishtype-form"),
@@ -52,9 +54,6 @@ urlpatterns = [
         DishAssignCookView.as_view(),
         name="dish-assign-cook",
     ),
-
-
-
 ]
 
 app_name = "restaurant"

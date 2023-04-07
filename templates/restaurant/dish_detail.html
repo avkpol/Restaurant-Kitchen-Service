@@ -1,9 +1,10 @@
-{% extends "base.html" %}
+{% extends "base_presentation.html" %}
 
 {% block content %}
   <h1>{{ dish.name }}</h1>
   <p><strong>Price:</strong> {{ dish.price }}</p>
   <p><strong>Type:</strong> {{ dish.dish_type }}</p>
+  <p><strong>Description:</strong> {{ dish.description }}</p>
 
   <table class="table">
     <thead>
@@ -17,7 +18,7 @@
         <td>
           <ul>
             {% for ingredient in dish.ingredients.all %}
-              <li>{{ ingredient.name }}</li>
+              <li><a style="color: saddlebrown" href="{% url 'restaurant:ingredient-detail' pk=ingredient.id %}">{{ ingredient.name }}</li>
             {% empty %}
               <li>None</li>
             {% endfor %}
@@ -42,8 +43,10 @@
       <legend><h4>Make Cook responsible for the dish:</h4> </legend>
       {% for cook in all_cooks %}
         <label>
+        {% if cook.is_active  %}
          <input type="radio" name="cook_id" value="{{ cook.id }}">
           {{ cook.username }} ({{ cook.first_name }} {{ cook.last_name }})
+        {% endif %}
         </label><br>
       {% endfor %}
     </fieldset>

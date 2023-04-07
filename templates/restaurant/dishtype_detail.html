@@ -1,32 +1,20 @@
-{% extends "base.html" %}
+{% extends "base_presentation.html" %}
 
 {% block content %}
   <h1>
-    Username: {{ cook.username }}
+    Type of Dishes: {{ dish_type.name }}
   </h1>
 
-  <p><strong>First name:</strong> {{ cook.first_name }}</p>
-  <p><strong>Last name:</strong> {{ cook.last_name }}</p>
-  <p><strong>Is staff:</strong> {{ cook.is_staff }}</p>
+  <p>{{ dishtype.description }}</p>
+  <h2>All dishes of this dish type</h2>
+  <ul>
+    {% for dish in dishes %}
+      <li style="color: chocolate">{{ dish.name }} </li>
+    {% empty %}
+      <li>No dishes for this dishtype</li>
+    {% endfor %}
+  </ul>
 
-  <div class="ml-3">
-    <h4>Dishes</h4>
 
-{#    {% for dish in cook.dishes.all %}#}
-{#        <hr>#}
-{#        <p><strong>Dish name:</strong> {{ dish.name }}</p>#}
-{#        <p><strong>Dish price:</strong> {{ dish.dish_type.name }}</p>#}
-{#        <p><strong>Dish description:</strong> {{ dish.description }}</p>#}
-{#        <p class="text-muted"><strong>Id:</strong> {{dish.id}}</p>#}
-{##}
-{#    {% empty %}#}
-{#      <p>No dishes!</p>#}
-{#    {% endfor %}#}
-  </div>
-{#  <a href="{% url 'restaurant:cook-update'  pk=cook.id %}" class="btn btn-secondary">#}
-{#        Update cook#}
-{#  </a>#}
-{#   <a href="{% url 'restaurant:cook-delete'  pk=cook.id %}" class="btn btn-danger">#}
-{#        Delete cook#}
-{#  </a>#}
+
 {% endblock %}

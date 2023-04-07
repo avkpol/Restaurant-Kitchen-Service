@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.contrib.auth.models import User
 from django.urls import reverse_lazy
 from django.views import generic, View
 from django.shortcuts import render, get_object_or_404
@@ -91,7 +92,7 @@ class CookCreateView(LoginRequiredMixin, generic.CreateView):
 
 class CookUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Cook
-    fields = ("username", "first_name", "last_name", "email",)
+    fields = "__all__"
     success_url = reverse_lazy("restaurant:cook-list")
 
 
@@ -144,6 +145,7 @@ class DishDetailView(generic.DetailView):
         return context
 
 
+
 class DishUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Dish
     fields = "__all__"
@@ -179,6 +181,12 @@ class DishTypeDetailView(generic.DetailView):
     context_object_name = 'dish_type'
     template_name = 'restaurant/dishtype_detail.html'
     success_url = reverse_lazy("restaurant:dishtype_list")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['dishes'] = Dish.objects.filter(dish_type=self.object)
+        return context
+
 
 
 class DishTypeCreateView(LoginRequiredMixin, generic.CreateView):
@@ -275,3 +283,5 @@ class DishAssignCookView(RedirectView):
         else:
             messages.error(request, "No cook was selected")
         return super().post(request, *args, **kwargs)
+
+

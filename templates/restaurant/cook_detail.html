@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base_presentation.html" %}
 
 {% block content %}
   <h3>
@@ -7,7 +7,11 @@
 
   <p><strong>First name:</strong> {{ cook.first_name }}</p>
   <p><strong>Last name:</strong> {{ cook.last_name }}</p>
+  <p><strong>Experience:</strong> {{ cook.years_of_experience }}years</p>
+  <p><strong>is_superuser:</strong> {{ cook.is_superuser }}</p>
   <p><strong>Is staff:</strong> {{ cook.is_staff }}</p>
+  <p><strong>Is active:</strong> {{ cook.is_active }}</p>
+
 
 {% if dishes %}
   <h4>Assigned Dishes:</h4>
