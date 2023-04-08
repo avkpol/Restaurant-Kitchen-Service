@@ -27,7 +27,7 @@ class Dish(models.Model):
     dish_type = models.CharField(max_length=100)
     cooks = models.ManyToManyField(Cook, blank=True)
     ingredients = models.ManyToManyField(
-        Ingredient, through='DishIngredient', related_name='dishes'
+        Ingredient, through="DishIngredient", related_name="dishes"
     )
 
     def __str__(self):
@@ -35,10 +35,11 @@ class Dish(models.Model):
 
     @property
     def available_cooks(self):
-        return Cook.objects.exclude(pk__in=self.cooks.all().values_list('pk', flat=True))
+        return Cook.objects.exclude(
+            pk__in=self.cooks.all().values_list("pk", flat=True)
+        )
 
 
 class DishIngredient(models.Model):
     dish = models.ForeignKey(Dish, on_delete=models.CASCADE)
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
-

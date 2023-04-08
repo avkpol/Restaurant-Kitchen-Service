@@ -4,38 +4,39 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('restaurant', '0003_alter_dish_description_dishingredient'),
+        ("restaurant", "0003_alter_dish_description_dishingredient"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='dish',
-            name='cooks',
+            model_name="dish",
+            name="cooks",
         ),
         migrations.RemoveField(
-            model_name='ingredient',
-            name='dishes',
+            model_name="ingredient",
+            name="dishes",
         ),
         migrations.AddField(
-            model_name='dish',
-            name='ingredients',
-            field=models.ManyToManyField(through='restaurant.DishIngredient', to='restaurant.ingredient'),
+            model_name="dish",
+            name="ingredients",
+            field=models.ManyToManyField(
+                through="restaurant.DishIngredient", to="restaurant.ingredient"
+            ),
         ),
         migrations.AlterField(
-            model_name='dish',
-            name='dish_type',
+            model_name="dish",
+            name="dish_type",
             field=models.CharField(max_length=100),
         ),
         migrations.AlterField(
-            model_name='dish',
-            name='name',
+            model_name="dish",
+            name="name",
             field=models.CharField(max_length=100),
         ),
         migrations.AlterField(
-            model_name='dish',
-            name='price',
+            model_name="dish",
+            name="price",
             field=models.DecimalField(decimal_places=2, max_digits=8),
         ),
     ]

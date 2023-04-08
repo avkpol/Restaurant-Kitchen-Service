@@ -1,39 +1,18 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
 
 from .models import Ingredient, Dish, Cook, DishType
 
 
-# class IngredientForm(forms.ModelForm):
-#     class Meta:
-#         model = Ingredient
-#         fields = ("id",)
-#     dishes = forms.ModelMultipleChoiceField(
-#         queryset=Dish.objects.all(),
-#         widget=forms.CheckboxSelectMultiple
-#     )
-
-
 class DishForm(forms.ModelForm):
     ingredients = forms.ModelMultipleChoiceField(
-        queryset=Ingredient.objects.all(),
-        widget=forms.CheckboxSelectMultiple
+        queryset=Ingredient.objects.all(), widget=forms.CheckboxSelectMultiple
     )
-    dish_type = forms.ModelChoiceField(
-        queryset=DishType.objects.all()
-    )
+    dish_type = forms.ModelChoiceField(queryset=DishType.objects.all())
 
     class Meta:
         model = Dish
-        fields = (
-            "name",
-            "dish_type",
-            "description",
-            "price",
-            "ingredients"
-        )
-
+        fields = ("name", "dish_type", "description", "price", "ingredients")
 
 
 class DishAssignCookForm(forms.ModelForm):
@@ -45,15 +24,13 @@ class DishAssignCookForm(forms.ModelForm):
 
     class Meta:
         model = Dish
-        fields = ['cooks']
+        fields = ["cooks"]
 
     def clean(self):
         cleaned_data = super().clean()
         cooks = cleaned_data.get("cooks")
         if not cooks:
-            raise forms.ValidationError(
-                "Please select at least one cook."
-            )
+            raise forms.ValidationError("Please select at least one cook.")
 
 
 class CookSearchForm(forms.Form):
@@ -61,9 +38,7 @@ class CookSearchForm(forms.Form):
         max_length=150,
         required=False,
         label="",
-        widget=forms.TextInput(
-            attrs={"placeholder": "Search by username:"}
-        ),
+        widget=forms.TextInput(attrs={"placeholder": "Search by username:"}),
     )
 
 
@@ -72,19 +47,16 @@ class DishSearchForm(forms.Form):
         max_length=150,
         required=False,
         label="",
-        widget=forms.TextInput(
-            attrs={"placeholder": "Search by dish name:"}
-        ),
+        widget=forms.TextInput(attrs={"placeholder": "Search by dish name:"}),
     )
+
 
 class DishTypeSearchForm(forms.Form):
     name = forms.CharField(
         max_length=150,
         required=False,
         label="",
-        widget=forms.TextInput(
-            attrs={"placeholder": "Search by dish type name:"}
-        ),
+        widget=forms.TextInput(attrs={"placeholder": "Search by dish type name:"}),
     )
 
 
@@ -93,9 +65,7 @@ class IngredientSearchForm(forms.Form):
         max_length=150,
         required=False,
         label="",
-        widget=forms.TextInput(
-            attrs={"placeholder": "Search by ingredient name:"}
-        ),
+        widget=forms.TextInput(attrs={"placeholder": "Search by ingredient name:"}),
     )
 
 
@@ -105,13 +75,12 @@ class LoginForm(forms.Form):
 
 
 class RegisterForm(UserCreationForm):
-
     def __init__(self, *args, **kwargs):
         super(UserCreationForm, self).__init__(*args, **kwargs)
 
-        for fieldname in ['username', 'password1', 'password2']:
+        for fieldname in ["username", "password1", "password2"]:
             self.fields[fieldname].help_text = None
 
     class Meta:
         model = Cook
-        fields = ['username', 'password1', 'password2']
+        fields = ["username", "email", "password1", "password2"]

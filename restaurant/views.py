@@ -1,7 +1,6 @@
-from django.contrib.auth import get_user_model
+from django.contrib.auth import login as dj_login
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.contrib.auth.models import User
 from django.urls import reverse_lazy
 from django.views import generic, View
 from django.shortcuts import render, get_object_or_404, redirect
@@ -24,27 +23,26 @@ from .models import DishType, Dish, Cook, Ingredient
 
 def login(request):
     """View function for the register page of the site."""
-    context = {'login': LoginForm()}
+    context = {"login": LoginForm()}
     return render(request, "registration/login.html", context=context)
 
 
 def sign_up(request):
-
-    if request.method == 'GET':
+    if request.method == "GET":
         form = RegisterForm()
-        return render(request, 'registration/register.html', {'form': form})
+        return render(request, "registration/register.html", {"form": form})
 
-    if request.method == 'POST':
+    if request.method == "POST":
         form = RegisterForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
             user.username = user.username.lower()
             user.save()
-            messages.success(request, 'You have singed up successfully.')
-            login(request, user)
-            return redirect('posts')
+            messages.success(request, "You have singed up successfully.")
+            dj_login(request, user)
+            return redirect("restaurant:login")
         else:
-            return render(request, 'registration/register.html', {'reg_form': form})
+            return render(request, "registration/register.html", {"reg_form": form})
 
 
 @login_required
@@ -72,10 +70,9 @@ def index(request):
 
 class CookListView(generic.ListView):
     model = Cook
-    context_object_name = 'cooks'
-    template_name = 'restaurant/cook_list.html'
+    context_object_name = "cooks"
+    template_name = "restaurant/cook_list.html"
     paginate_by = 5
-
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -92,30 +89,30 @@ class CookListView(generic.ListView):
 
 class CookDetailView(LoginRequiredMixin, generic.DetailView):
     model = Cook
-    context_object_name = 'cook'
-    template_name = 'restaurant/cook_detail.html'
+    context_object_name = "cook"
+    template_name = "restaurant/cook_detail.html"
     success_url = reverse_lazy("restaurant:cook-list")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['dishes'] = Dish.objects.filter(cooks=self.object)
+        context["dishes"] = Dish.objects.filter(cooks=self.object)
         return context
 
 
 class CookCreateView(LoginRequiredMixin, generic.CreateView):
     model = Cook
     fields = [
-        'years_of_experience',
-        'username',
-        'email',
-        'password',
-        'first_name',
-        'last_name',
+        "years_of_experience",
+        "username",
+        "email",
+        "password",
+        "first_name",
+        "last_name",
         "is_staff",
         "is_active",
-        "is_superuser"
+        "is_superuser",
     ]
-    template_name = 'restaurant/cook_form.html'
+    template_name = "restaurant/cook_form.html"
     success_url = reverse_lazy("restaurant:cook-list")
 
 
@@ -133,8 +130,8 @@ class CookDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 class DishListView(LoginRequiredMixin, generic.ListView):
     model = Dish
-    context_object_name = 'dishes'
-    template_name = 'restaurant/dish_list.html'
+    context_object_name = "dishes"
+    template_name = "restaurant/dish_list.html"
     paginate_by = 5
 
     def get_context_data(self, **kwargs):
@@ -153,12 +150,12 @@ class DishListView(LoginRequiredMixin, generic.ListView):
 class DishCreateView(LoginRequiredMixin, generic.CreateView):
     model = Dish
     form_class = DishForm
-    template_name = 'restaurant/dish_form.html'
+    template_name = "restaurant/dish_form.html"
     success_url = reverse_lazy("restaurant:dish-list")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['available_dish_types'] = DishType.objects.all()
+        context["available_dish_types"] = DishType.objects.all()
         return context
 
 
@@ -169,8 +166,8 @@ class DishDetailView(LoginRequiredMixin, generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['assign_cook_form'] = DishAssignCookForm()
-        context['all_cooks'] = Cook.objects.all()
+        context["assign_cook_form"] = DishAssignCookForm()
+        context["all_cooks"] = Cook.objects.all()
         return context
 
 
@@ -188,7 +185,7 @@ class DishDeleteView(LoginRequiredMixin, generic.DeleteView):
 class DishTypeListView(LoginRequiredMixin, generic.ListView):
     model = DishType
     context_object_name = "dishtypes"
-    template_name = 'restaurant/dishtype_list.html'
+    template_name = "restaurant/dishtype_list.html"
     paginate_by = 5
 
     def get_context_data(self, **kwargs):
@@ -206,20 +203,20 @@ class DishTypeListView(LoginRequiredMixin, generic.ListView):
 
 class DishTypeDetailView(LoginRequiredMixin, generic.DetailView):
     model = DishType
-    context_object_name = 'dish_type'
-    template_name = 'restaurant/dishtype_detail.html'
+    context_object_name = "dish_type"
+    template_name = "restaurant/dishtype_detail.html"
     success_url = reverse_lazy("restaurant:dishtype_list")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['dishes'] = Dish.objects.filter(dish_type=self.object)
+        context["dishes"] = Dish.objects.filter(dish_type=self.object)
         return context
 
 
 class DishTypeCreateView(LoginRequiredMixin, generic.CreateView):
     model = DishType
     fields = "__all__"
-    template_name = 'restaurant/dishtype_form.html'
+    template_name = "restaurant/dishtype_form.html"
     success_url = reverse_lazy("restaurant:dishtype-list")
 
 
@@ -254,8 +251,8 @@ class IngredientListView(LoginRequiredMixin, generic.ListView):
 
 class IngredientDetailView(LoginRequiredMixin, generic.DetailView):
     model = Ingredient
-    template_name = 'restaurant/ingredient_detail.html'
-    context_object_name = 'ingredient'
+    template_name = "restaurant/ingredient_detail.html"
+    context_object_name = "ingredient"
 
 
 class IngredientCreateView(LoginRequiredMixin, generic.CreateView):
@@ -277,10 +274,10 @@ class IngredientDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 class IngredientsForDishView(View):
     def get(self, request, *args, **kwargs):
-        dish = get_object_or_404(Dish, pk=kwargs['pk'])
+        dish = get_object_or_404(Dish, pk=kwargs["pk"])
         ingredients = dish.ingredients.all()
-        context = {'dish': dish, 'ingredients': ingredients}
-        return render(request, 'restaurant/dish_detail.html', context)
+        context = {"dish": dish, "ingredients": ingredients}
+        return render(request, "restaurant/dish_detail.html", context)
 
 
 class DishAssignCookView(LoginRequiredMixin, RedirectView):
@@ -298,16 +295,17 @@ class DishAssignCookView(LoginRequiredMixin, RedirectView):
                 if cook in dish.cooks.all():
                     dish.cooks.remove(cook)
                     messages.success(
-                        request, f"Cook {cook} no more responsible for {dish.name}",
-                        extra_tags="alert alert-danger"
+                        request,
+                        f"Cook {cook} no more responsible for {dish.name}",
+                        extra_tags="alert alert-danger",
                     )
                 else:
                     dish.cooks.add(cook)
                     messages.success(
-                        request, f"{dish.name} has been assigned to cook {cook} ",
-                        extra_tags="alert alert-success"
+                        request,
+                        f"{dish.name} has been assigned to cook {cook} ",
+                        extra_tags="alert alert-success",
                     )
         else:
             messages.error(request, "No cook was selected")
         return super().post(request, *args, **kwargs)
-

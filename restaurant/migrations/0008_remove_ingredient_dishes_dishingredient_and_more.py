@@ -5,27 +5,50 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('restaurant', '0007_remove_dish_ingredients_ingredient_dishes_and_more'),
+        ("restaurant", "0007_remove_dish_ingredients_ingredient_dishes_and_more"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='ingredient',
-            name='dishes',
+            model_name="ingredient",
+            name="dishes",
         ),
         migrations.CreateModel(
-            name='DishIngredient',
+            name="DishIngredient",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('dish', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='restaurant.dish')),
-                ('ingredient', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='restaurant.ingredient')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "dish",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="restaurant.dish",
+                    ),
+                ),
+                (
+                    "ingredient",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="restaurant.ingredient",
+                    ),
+                ),
             ],
         ),
         migrations.AddField(
-            model_name='dish',
-            name='ingredients',
-            field=models.ManyToManyField(related_name='dishes', through='restaurant.DishIngredient', to='restaurant.ingredient'),
+            model_name="dish",
+            name="ingredients",
+            field=models.ManyToManyField(
+                related_name="dishes",
+                through="restaurant.DishIngredient",
+                to="restaurant.ingredient",
+            ),
         ),
     ]

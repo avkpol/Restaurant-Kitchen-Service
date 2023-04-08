@@ -5,15 +5,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('restaurant', '0005_alter_dish_ingredients'),
+        ("restaurant", "0005_alter_dish_ingredients"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='dish',
-            name='cooks',
+            model_name="dish",
+            name="cooks",
             field=models.ManyToManyField(blank=True, to=settings.AUTH_USER_MODEL),
         ),
     ]
