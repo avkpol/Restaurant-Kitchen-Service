@@ -1,15 +1,18 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+
 from .models import Ingredient, Dish, Cook, DishType
 
 
-class IngredientForm(forms.ModelForm):
-    class Meta:
-        model = Ingredient
-        fields = ("id",)
-    dishes = forms.ModelMultipleChoiceField(
-        queryset=Dish.objects.all(),
-        widget=forms.CheckboxSelectMultiple
-    )
+# class IngredientForm(forms.ModelForm):
+#     class Meta:
+#         model = Ingredient
+#         fields = ("id",)
+#     dishes = forms.ModelMultipleChoiceField(
+#         queryset=Dish.objects.all(),
+#         widget=forms.CheckboxSelectMultiple
+#     )
 
 
 class DishForm(forms.ModelForm):
@@ -36,9 +39,8 @@ class DishForm(forms.ModelForm):
 class DishAssignCookForm(forms.ModelForm):
     cooks = forms.ModelMultipleChoiceField(
         queryset=Cook.objects.all(),
-        # queryset=Cook.objects.filter(groups__name='Cook'),
         # widget=forms.RadioSelect,
-        widget=forms.CheckboxSelectMultiple,
+        # widget=forms.CheckboxSelectMultiple,
     )
 
     class Meta:
@@ -95,3 +97,21 @@ class IngredientSearchForm(forms.Form):
             attrs={"placeholder": "Search by ingredient name:"}
         ),
     )
+
+
+class LoginForm(forms.Form):
+    username = forms.CharField(max_length=65)
+    password = forms.CharField(max_length=65, widget=forms.PasswordInput)
+
+
+class RegisterForm(UserCreationForm):
+
+    def __init__(self, *args, **kwargs):
+        super(UserCreationForm, self).__init__(*args, **kwargs)
+
+        for fieldname in ['username', 'password1', 'password2']:
+            self.fields[fieldname].help_text = None
+
+    class Meta:
+        model = Cook
+        fields = ['username', 'password1', 'password2']

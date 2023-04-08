@@ -131,3 +131,5 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 ASSETS_ROOT = '/static/assets'
+
+LOGIN_REDIRECT_URL = "/"

@@ -1,13 +1,16 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy
 from django.views import generic, View
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import RedirectView
 
 from .forms import (
+    LoginForm,
+    RegisterForm,
     CookSearchForm,
     DishForm,
     DishAssignCookForm,
@@ -15,7 +18,33 @@ from .forms import (
     DishTypeSearchForm,
     IngredientSearchForm,
 )
+
 from .models import DishType, Dish, Cook, Ingredient
+
+
+def login(request):
+    """View function for the register page of the site."""
+    context = {'login': LoginForm()}
+    return render(request, "registration/login.html", context=context)
+
+
+def sign_up(request):
+
+    if request.method == 'GET':
+        form = RegisterForm()
+        return render(request, 'registration/register.html', {'form': form})
+
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.username = user.username.lower()
+            user.save()
+            messages.success(request, 'You have singed up successfully.')
+            login(request, user)
+            return redirect('posts')
+        else:
+            return render(request, 'registration/register.html', {'reg_form': form})
 
 
 @login_required
@@ -61,7 +90,7 @@ class CookListView(generic.ListView):
         return queryset
 
 
-class CookDetailView(generic.DetailView):
+class CookDetailView(LoginRequiredMixin, generic.DetailView):
     model = Cook
     context_object_name = 'cook'
     template_name = 'restaurant/cook_detail.html'
@@ -133,7 +162,7 @@ class DishCreateView(LoginRequiredMixin, generic.CreateView):
         return context
 
 
-class DishDetailView(generic.DetailView):
+class DishDetailView(LoginRequiredMixin, generic.DetailView):
     model = Dish
     template_name = "restaurant/dish_detail.html"
     success_url = reverse_lazy("restaurant:dish-list")
@@ -143,7 +172,6 @@ class DishDetailView(generic.DetailView):
         context['assign_cook_form'] = DishAssignCookForm()
         context['all_cooks'] = Cook.objects.all()
         return context
-
 
 
 class DishUpdateView(LoginRequiredMixin, generic.UpdateView):
@@ -157,7 +185,7 @@ class DishDeleteView(LoginRequiredMixin, generic.DeleteView):
     success_url = reverse_lazy("restaurant:dish-list")
 
 
-class DishTypeListView(generic.ListView):
+class DishTypeListView(LoginRequiredMixin, generic.ListView):
     model = DishType
     context_object_name = "dishtypes"
     template_name = 'restaurant/dishtype_list.html'
@@ -176,7 +204,7 @@ class DishTypeListView(generic.ListView):
         return queryset
 
 
-class DishTypeDetailView(generic.DetailView):
+class DishTypeDetailView(LoginRequiredMixin, generic.DetailView):
     model = DishType
     context_object_name = 'dish_type'
     template_name = 'restaurant/dishtype_detail.html'
@@ -186,7 +214,6 @@ class DishTypeDetailView(generic.DetailView):
         context = super().get_context_data(**kwargs)
         context['dishes'] = Dish.objects.filter(dish_type=self.object)
         return context
-
 
 
 class DishTypeCreateView(LoginRequiredMixin, generic.CreateView):
@@ -224,7 +251,7 @@ class IngredientListView(LoginRequiredMixin, generic.ListView):
             queryset = queryset.filter(name__icontains=name)
         return queryset
 
-#
+
 class IngredientDetailView(LoginRequiredMixin, generic.DetailView):
     model = Ingredient
     template_name = 'restaurant/ingredient_detail.html'
@@ -256,7 +283,7 @@ class IngredientsForDishView(View):
         return render(request, 'restaurant/dish_detail.html', context)
 
 
-class DishAssignCookView(RedirectView):
+class DishAssignCookView(LoginRequiredMixin, RedirectView):
     url = reverse_lazy("restaurant:dish-list")
 
     def post(self, request, *args, **kwargs):
@@ -283,5 +310,4 @@ class DishAssignCookView(RedirectView):
         else:
             messages.error(request, "No cook was selected")
         return super().post(request, *args, **kwargs)
-
 

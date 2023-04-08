@@ -40,9 +40,11 @@
   <form method="post" action="{% url 'restaurant:dish-assign-cook' pk=dish.pk %}">
     {% csrf_token %}
     <fieldset>
+
       <legend><h4>Make Cook responsible for the dish:</h4> </legend>
+          <br>
       {% for cook in all_cooks %}
-        <label>
+         <label>
         {% if cook.is_active  %}
          <input type="radio" name="cook_id" value="{{ cook.id }}">
           {{ cook.username }} ({{ cook.first_name }} {{ cook.last_name }})
