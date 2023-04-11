@@ -18,9 +18,7 @@ class DishForm(forms.ModelForm):
 class DishAssignCookForm(forms.ModelForm):
     cooks = forms.ModelMultipleChoiceField(
         queryset=Cook.objects.all(),
-        # widget=forms.RadioSelect,
-        # widget=forms.CheckboxSelectMultiple,
-    )
+      )
 
     class Meta:
         model = Dish
