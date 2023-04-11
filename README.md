@@ -9,3 +9,7 @@ Besides, you can assign a cooker to be responsible for one or several dishes.
 Below is the diagram of all models relations. You can also download this diagram pressing 'Download'
 button on the project`s main page.
 [RKS.pdf](..%2F..%2F..%2FDesktop%2FRKS.pdf)
+
+Add default user:
+username: "user"
+password: "user12345"
