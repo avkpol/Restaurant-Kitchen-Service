@@ -30,7 +30,6 @@ DEBUG = os.environ.get("DJANGO_DEBUG", "") != "False"
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -47,6 +46,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -79,19 +79,30 @@ CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 WSGI_APPLICATION = "restaurant_kitchen_service.wsgi.application"
 
-
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'ndqwmvjw',
+        'USER': 'ndqwmvjw',
+        'PASSWORD': '5azesLq-r-cFZ1G8T6B9oqI_qHzS9U2u',
+        'HOST': 'hattie.db.elephantsql.com',
+        'PORT': '5432',
     }
 }
 
-db_from_env = dj_database_url.config(conn_max_age=500)
-DATABASES["default"].update(db_from_env)
+# postgres://ndqwmvjw:5azesLq-r-cFZ1G8T6B9oqI_qHzS9U2u@hattie.db.elephantsql.com/ndqwmvjw
+# db_from_env = dj_database_url.config(conn_max_age=500)
+# DATABASES["default"].update(db_from_env)
+
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
@@ -129,11 +140,11 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
-# STATICFILES_DIRS = [
-#     BASE_DIR / "restaurant/static/"
-# ]
-#
-# STATIC_ROOT = "staticfiles/"
+STATICFILES_DIRS = [
+    BASE_DIR / "restaurant/static/"
+]
+
+STATIC_ROOT = "staticfiles/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
