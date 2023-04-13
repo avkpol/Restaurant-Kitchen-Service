@@ -1,0 +1,13 @@
+{% extends "base_presentation.html" %}
+{% block content %}
+
+<h2>Name: {{ ingredient.name }}</h2>
+
+  <h3>Dishes with this ingredient:</h3>
+<ul>
+{% for dish in ingredient.dishes.all %}
+    <li style="color: chocolate">{{ dish }}</li>
+{% endfor %}
+</ul>
+{% endblock %}
+

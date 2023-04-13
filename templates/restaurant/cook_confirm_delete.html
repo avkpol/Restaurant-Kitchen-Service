@@ -1,0 +1,12 @@
+{% extends "base_presentation.html" %}
+
+{% block content %}
+  <h1>Delete the cook?</h1>
+  <p>Are you sure you really want to delete this cook?</p>
+  <p><strong>All cook`s dependencies will also be deleted!</strong></p>
+  <form action="" method="post" novalidate>
+    {% csrf_token %}
+
+    <input type="submit" value="Yes, Delete this cook" class="btn btn-danger">
+  </form>
+{% endblock %}

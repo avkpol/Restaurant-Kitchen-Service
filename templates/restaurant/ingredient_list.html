@@ -1,0 +1,63 @@
+{% extends "base_presentation.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  <form class="navbar-search form-inline" id="navbar-search-main">
+      <div class="input-group input-group-merge search-bar">
+
+          <form action="" method="get" class="form-inline">
+            {{ search_form|crispy }}
+            <input class="btn btn-secondary " type="submit" value="&#128269;">
+          </form>
+
+      </div>
+    </form>
+  <br>
+  <br>
+    <h1>Ingredient List
+
+      <a href="{% url 'restaurant:ingredient-form' %}" class="btn btn-outline-primary link-to-page">
+        + new ingredient
+      </a>
+   </h1>
+  <br>
+  <br>
+{#   <form action="" method="get" class="form-inline">#}
+{#      {{ search_form|crispy }}#}
+{#      <input class="btn btn-secondary " type="submit" value="&#128269;">#}
+{#  </form>#}
+  <br>
+  <br>
+
+
+    {% if ingredients %}
+    <table class="table">
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Part of which dish: </th>
+        <th>UPDATE</th>
+        <th>DELETE</th>
+
+      </tr>
+    {% for ingredient in ingredients %}
+      <tr>
+        <td>{{ ingredient.id }}</td>
+        <td><a style="color: saddlebrown" href="{% url 'restaurant:ingredient-detail' pk=ingredient.id %}">{{ ingredient.name }} </a></td>
+        <td>
+          {% for dish in ingredient.dishes.all %}
+            {{ dish.name }}{% if not forloop.last %}, {% endif %}
+          {% empty %}
+            None
+          {% endfor %}
+        </td>
+        <td><a  href="{% url 'restaurant:ingredient-form' pk=ingredient.id %}">UPDATE</a></td>
+        <td><a style="color: red" href="{% url 'restaurant:ingredient-confirm-delete' pk=ingredient.id %}">DELETE</a></td>
+      </tr>
+    {% endfor %}
+
+    </table>
+    {% else %}
+      <p>There are no ingredients in the service.</p>
+    {% endif %}
+{% endblock %}

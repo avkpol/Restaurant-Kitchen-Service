@@ -1,0 +1,67 @@
+{% extends "base_presentation.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+
+    <form class="navbar-search form-inline" id="navbar-search-main">
+      <div class="input-group input-group-merge search-bar">
+
+          <form action="" method="get" class="form-inline">
+            {{ search_form|crispy }}
+            <input class="btn btn-secondary " type="submit" value="&#128269;">
+          </form>
+
+      </div>
+    </form>
+  <br>
+  <br>
+  <h1>Cooks List
+    <a href="{% url 'restaurant:cook-form' %}" class="btn btn-outline-primary link-to-page">
+      + new cook
+    </a>
+  </h1>
+
+  <br>
+  <br>
+  {% if cooks %}
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Username</th>
+          <th>First name</th>
+          <th>Last name</th>
+          <th>Update</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for cook in cooks %}
+          <tr>
+            <td>{{ cook.id }}</td>
+            <td>
+              <a style="color: saddlebrown" href="{% url 'restaurant:cook-detail' pk=cook.id %}">
+                {{ cook.username }}
+                {% if user == cook %} (Me){% endif %}
+              </a>
+            </td>
+            <td>{{ cook.first_name }}</td>
+            <td>{{ cook.last_name }}</td>
+            <td>
+              <a href="{% url 'restaurant:cook-form' pk=cook.id %}" >
+                UPDATE
+              </a>
+            </td>
+            <td>
+              <a style="color: red" href="{% url 'restaurant:cook-confirm-delete' pk=cook.id %}">
+                DELETE
+              </a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>There are no cooks in the service.</p>
+  {% endif %}
+{% endblock %}

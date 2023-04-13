@@ -1,0 +1,57 @@
+{% extends "base_presentation.html" %}
+
+{% block content %}
+  <h1>{{ dish.name }}</h1>
+  <p><strong>Price:</strong> {{ dish.price }}</p>
+  <p><strong>Type:</strong> {{ dish.dish_type }}</p>
+  <p><strong>Description:</strong> {{ dish.description }}</p>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Ingredients</th>
+        <th>Cooks responsible for the dish</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <ul>
+            {% for ingredient in dish.ingredients.all %}
+              <li><a style="color: saddlebrown" href="{% url 'restaurant:ingredient-detail' pk=ingredient.id %}">{{ ingredient.name }}</li>
+            {% empty %}
+              <li>None</li>
+            {% endfor %}
+          </ul>
+        </td>
+        <td>
+          <ul>
+            {% for cook in dish.cooks.all %}
+              <li>{{ cook.username }}</li>
+            {% empty %}
+              <li>No cooks assigned</li>
+            {% endfor %}
+          </ul>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <form method="post" action="{% url 'restaurant:dish-assign-cook' pk=dish.pk %}">
+    {% csrf_token %}
+    <fieldset>
+
+      <legend><h4>Make Cook responsible for the dish:</h4> </legend>
+          <br>
+      {% for cook in all_cooks %}
+         <label>
+        {% if cook.is_active  %}
+         <input type="radio" name="cook_id" value="{{ cook.id }}">
+          {{ cook.username }} ({{ cook.first_name }} {{ cook.last_name }})
+        {% endif %}
+        </label><br>
+      {% endfor %}
+    </fieldset>
+    <button type="submit" class="btn btn-primary">Assign Cooks</button>
+  </form>
+{% endblock %}

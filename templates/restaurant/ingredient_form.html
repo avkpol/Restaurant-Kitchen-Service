@@ -1,0 +1,27 @@
+{% extends "base_presentation.html" %}
+{% load crispy_forms_filters %}
+<h1>New Dish Ingredient</h1>
+
+{% block content %}
+  <h1>{{ object|yesno:"Update, Create" }} dish ingredient</h1>
+  <form action="" method="post" novalidate>
+    {% csrf_token %}
+    {{ form|crispy }}
+
+    <input type="submit" value="Submit" class="btn btn-outline-secondary">
+  </form>
+   <form>
+    <ul>
+      {% for ingredient in form.ingredients %}
+        <li>
+          {{ ingredient }}
+          {% if ingredient.value %}
+            (<a href="{% url 'restaurant:ingredient-dishes' ingredient.value %}">view dishes</a>)
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+
+
+  </form>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "base_presentation.html" %}
+
+{% block content %}
+  <h1>
+    Type of Dishes: {{ dish_type.name }}
+  </h1>
+
+  <p>{{ dishtype.description }}</p>
+  <h2>All dishes of this dish type</h2>
+  <ul>
+    {% for dish in dishes %}
+      <li style="color: chocolate">{{ dish.name }} </li>
+    {% empty %}
+      <li>No dishes for this dishtype</li>
+    {% endfor %}
+  </ul>
+
+
+
+{% endblock %}

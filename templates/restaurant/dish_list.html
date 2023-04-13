@@ -1,0 +1,91 @@
+{% extends "base_presentation.html"%}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  <form class="navbar-search form-inline" id="navbar-search-main">
+      <div class="input-group input-group-merge search-bar">
+
+          <form action="" method="get" class="form-inline">
+            {{ search_form|crispy }}
+            <input class="btn btn-secondary " type="submit" value="&#128269;">
+          </form>
+
+      </div>
+    </form>
+  <br>
+  <br>
+  <h1>
+    List of Dishes
+    <a href="{% url 'restaurant:dish-form' %}" class="btn btn-outline-primary link-to-page">
+      + new dish
+    </a>
+  </h1>
+  <br>
+  <br>
+
+  <br>
+  <br>
+  {% if dishes %}
+    <table class="table">
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Dish type</th>
+        <th>Ingredients</th>
+        <th>UPDATE</th>
+        <th>DELETE</th>
+      </tr>
+
+      {% for dish in dishes %}
+        <tr>
+          <td>
+              {{ dish.id }}
+          </td>
+          <td>
+            <a style="color: saddlebrown" href="{% url 'restaurant:dish-detail' pk=dish.id %}">{{ dish.name }}</a>
+          </td>
+          <td>
+              {{ dish.price }}
+          </td>
+          <td>
+              {{ dish.dish_type }}
+          </td>
+          <td>
+            {% for ingredient in dish.ingredients.all %}
+              {{ ingredient.name }}
+              {% if not forloop.last %}, {% endif %}
+            {% empty %}
+              None
+            {% endfor %}
+          </td>
+          <td>
+              <a href="{% url 'restaurant:dish-form' pk=dish.id %}">
+                UPDATE
+              </a>
+            </td>
+            <td>
+              <a style="color: red"
+                href="{% url 'restaurant:dish-confirm-delete' pk=dish.id %}">
+                DELETE
+              </a>
+            </td>
+        </tr>
+      {% endfor %}
+    </table>
+
+  {% else %}
+      <p>There are no dishes in the kitchen service list .</p>
+  {% endif %}
+
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+
+        </div>
+    {% endfor %}
+{% endif %}
+
+{% endblock %}
