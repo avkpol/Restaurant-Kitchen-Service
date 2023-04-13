@@ -10,6 +10,12 @@ Below is the diagram of all models relations. You can also download this diagram
 button on the project`s main page.
 [RKS.pdf](..%2F..%2F..%2FDesktop%2FRKS.pdf)
 
-Add default user:
+
+
+### **The project is deployed in**: https://restaurant-kitchen-service-sgtm.onrender.com
+
+#### **Default user**:
+
 username: "user"
+
 password: "user12345"
